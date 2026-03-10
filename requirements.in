@@ -1,0 +1,57 @@
+# ============================================================
+# requirements.in
+# Apenas pacotes base — versões resolvidas pelo pip-compile
+# Para atualizar: bash update_deps.sh
+# ============================================================
+
+# --- LLM / AI ---
+ollama
+langchain
+langchain-community
+langgraph
+langchain-ollama
+
+# --- PDF Extraction ---
+pymupdf
+pdfplumber
+
+# --- Web / Scraping ---
+httpx
+beautifulsoup4
+lxml
+
+# --- Database ---
+sqlalchemy
+asyncpg
+alembic
+psycopg2-binary
+
+# --- Cache ---
+redis
+chromadb
+
+# --- Scheduler ---
+apscheduler
+
+# --- API ---
+fastapi
+uvicorn[standard]
+python-multipart
+
+# --- Data Models ---
+pydantic
+pydantic-settings
+
+# --- Utils ---
+python-dotenv
+loguru
+tenacity
+pytz
+
+# --- UI ---
+streamlit
+
+# --- Dev / Tests ---
+pytest
+pytest-asyncio
+pytest-cov
