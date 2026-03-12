@@ -7,6 +7,7 @@ class FeatureFlags:
     """
     Feature flags que controlam o comportamento do CV Conformity Agent.
     Cada dimensão de validação pode ser ligada/desligada independentemente,
+    exatamente como no Agent Feito/Conferido.
     """
 
     # ----------------------------------------------------------

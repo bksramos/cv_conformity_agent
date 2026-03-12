@@ -59,14 +59,35 @@ async def check_redis():
 
 async def check_chromadb():
     from config.settings import settings
+    # ChromaDB mudou endpoints entre versões — testa os dois
+    base = f"http://{settings.chroma_host}:{settings.chroma_port}"
+    candidates = [
+        f"{base}/api/v1/heartbeat",   # v0.4.x
+        f"{base}/api/v2/heartbeat",   # v0.5.x+
+        f"{base}/api/v1",             # algumas builds respondem na raiz da API
+        f"{base}/healthz",            # fallback genérico
+    ]
     try:
         async with httpx.AsyncClient(timeout=10) as client:
-            r = await client.get(f"http://{settings.chroma_host}:{settings.chroma_port}/api/v1/heartbeat")
-            if r.status_code == 200:
-                logger.success("✅ ChromaDB — OK")
-                return True
+            for url in candidates:
+                try:
+                    r = await client.get(url)
+                    if r.status_code == 200:
+                        logger.success(f"✅ ChromaDB — OK (endpoint: {url})")
+                        return True
+                    else:
+                        logger.debug(f"   ChromaDB {url} → HTTP {r.status_code}")
+                except httpx.ConnectError:
+                    logger.debug(f"   ChromaDB {url} → connection refused")
+
+            logger.error(
+                f"❌ ChromaDB — nenhum endpoint respondeu 200. "
+                f"Verifique se a porta {settings.chroma_port} está correta no .env "
+                f"e se o container está saudável: docker compose logs chromadb"
+            )
+            return False
     except Exception as e:
-        logger.error(f"❌ ChromaDB — FALHOU: {e}")
+        logger.error(f"❌ ChromaDB — FALHOU: {type(e).__name__}: {e}")
         return False
 
 

@@ -3,6 +3,7 @@ from sqlalchemy.orm import DeclarativeBase
 from loguru import logger
 from config.settings import settings
 
+
 class Base(DeclarativeBase):
     pass
 
@@ -37,6 +38,9 @@ async def get_db():
 
 async def init_db():
     """Cria todas as tabelas (usado em dev — em prod usar Alembic)."""
+    # CRÍTICO: importar todos os ORM models antes do create_all
+    # para que Base.metadata os conheça
+    import database.models  # noqa: F401
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
     logger.info("✅ Banco de dados inicializado")

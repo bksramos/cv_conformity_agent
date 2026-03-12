@@ -7,6 +7,7 @@ from database.models import JobDescriptionORM
 from models.jd_model import JobDescription
 from loguru import logger
 
+
 class JDRepository:
 
     def __init__(self, session: AsyncSession):
@@ -72,4 +73,3 @@ class JDRepository:
             .values(is_active=False)
         )
         return result.rowcount
-

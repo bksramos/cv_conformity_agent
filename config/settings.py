@@ -48,6 +48,7 @@ class Settings(BaseSettings):
         env_file = ".env"
         env_file_encoding = "utf-8"
         case_sensitive = False
+        extra = "ignore"   # ignora variáveis do .env não declaradas (ex: pgadmin_*)
 
     def create_dirs(self):
         self.upload_dir.mkdir(parents=True, exist_ok=True)

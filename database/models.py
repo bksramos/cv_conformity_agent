@@ -114,4 +114,3 @@ class AnalysisResultORM(Base):
     analyzed_at = Column(DateTime(timezone=True), server_default=func.now())
 
     job_description = relationship("JobDescriptionORM", back_populates="analysis_results")
-
